@@ -7,6 +7,7 @@ import com.forroworld.forro_api.model.User;
 import com.forroworld.forro_api.repository.ProfileRepository;
 import com.forroworld.forro_api.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class ProfileService {
@@ -51,6 +52,48 @@ public class ProfileService {
 
         profileRepository.save(profile);
         return toResponse(profile, user);
+    }
+
+    public List<ProfileResponse> findTeachersByCity(String city) {
+        return profileRepository.findByCityAndUser_UserType(city, "TEACHER")
+                .stream()
+                .map(p -> toResponse(p, p.getUser()))
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    public List<ProfileResponse> findArtistsByCity(String city) {
+        return profileRepository.findByCityAndUser_UserType(city, "ARTIST")
+                .stream()
+                .map(p -> toResponse(p, p.getUser()))
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    public List<ProfileResponse> findTeachersByCountry(String country) {
+        return profileRepository.findByCountryAndUser_UserType(country, "TEACHER")
+                .stream()
+                .map(p -> toResponse(p, p.getUser()))
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    public List<ProfileResponse> findArtistsByCountry(String country) {
+        return profileRepository.findByCountryAndUser_UserType(country, "ARTIST")
+                .stream()
+                .map(p -> toResponse(p, p.getUser()))
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    public List<ProfileResponse> searchByName(String name) {
+        return profileRepository.findByDisplayNameContaining(name)
+                .stream()
+                .map(p -> toResponse(p, p.getUser()))
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    public List<ProfileResponse> searchByNameAndType(String name, String userType) {
+        return profileRepository.findByDisplayNameContainingAndUserType(name, userType)
+                .stream()
+                .map(p -> toResponse(p, p.getUser()))
+                .collect(java.util.stream.Collectors.toList());
     }
 
     private ProfileResponse toResponse(Profile profile, User user) {

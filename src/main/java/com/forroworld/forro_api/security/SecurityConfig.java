@@ -30,6 +30,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers("/api/profiles/search").permitAll()
+                        .requestMatchers("/api/events").permitAll()
+                        .requestMatchers("/api/events/by-city").permitAll()
+                        .requestMatchers("/api/events/by-country").permitAll()
+                        .requestMatchers("/api/events/by-type").permitAll()
+                        .requestMatchers("/api/travels/by-city").permitAll()
+                        .requestMatchers("/api/travels/by-city-and-date").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
