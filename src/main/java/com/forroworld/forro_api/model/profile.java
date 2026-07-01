@@ -31,6 +31,17 @@ public class Profile {
 
     @Column(name = "artist_type")
     private String artistType;
+    @Column(name = "instagram_url")
+    private String instagramUrl;
+
+    @Column(name = "youtube_url")
+    private String youtubeUrl;
+
+    @Column(name = "spotify_url")
+    private String spotifyUrl;
+
+    @Column(name = "website_url")
+    private String websiteUrl;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -67,4 +78,12 @@ public class Profile {
     public void setArtistType(String artistType) { this.artistType = artistType; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public String getInstagramUrl() { return instagramUrl; }
+    public void setInstagramUrl(String instagramUrl) { this.instagramUrl = instagramUrl; }
+    public String getYoutubeUrl() { return youtubeUrl; }
+    public void setYoutubeUrl(String youtubeUrl) { this.youtubeUrl = youtubeUrl; }
+    public String getSpotifyUrl() { return spotifyUrl; }
+    public void setSpotifyUrl(String spotifyUrl) { this.spotifyUrl = spotifyUrl; }
+    public String getWebsiteUrl() { return websiteUrl; }
+    public void setWebsiteUrl(String websiteUrl) { this.websiteUrl = websiteUrl; }
 }
