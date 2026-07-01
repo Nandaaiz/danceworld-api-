@@ -31,7 +31,7 @@ public class Event {
     private Boolean isFree = false;
 
     private BigDecimal price;
-    private String currency = "BRL";
+    private String currency;
 
     @Column(name = "ticket_url")
     private String ticketUrl;

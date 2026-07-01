@@ -26,17 +26,7 @@ public class ProfileService {
         Profile profile = profileRepository.findByUser(user)
                 .orElse(new Profile());
 
-        return new ProfileResponse(
-                profile.getDisplayName(),
-                profile.getBio(),
-                profile.getCity(),
-                profile.getCountry(),
-                profile.getProfilePhotoUrl(),
-                profile.getDanceStyles(),
-                profile.getArtistType(),
-                user.getEmail(),
-                user.getUserType().name()
-        );
+        return toResponse(profile, user);
     }
 
     public ProfileResponse updateProfile(String email, ProfileRequest request) {
@@ -54,9 +44,16 @@ public class ProfileService {
         profile.setProfilePhotoUrl(request.getProfilePhotoUrl());
         profile.setDanceStyles(request.getDanceStyles());
         profile.setArtistType(request.getArtistType());
+        profile.setInstagramUrl(request.getInstagramUrl());
+        profile.setYoutubeUrl(request.getYoutubeUrl());
+        profile.setSpotifyUrl(request.getSpotifyUrl());
+        profile.setWebsiteUrl(request.getWebsiteUrl());
 
         profileRepository.save(profile);
+        return toResponse(profile, user);
+    }
 
+    private ProfileResponse toResponse(Profile profile, User user) {
         return new ProfileResponse(
                 profile.getDisplayName(),
                 profile.getBio(),
@@ -66,7 +63,11 @@ public class ProfileService {
                 profile.getDanceStyles(),
                 profile.getArtistType(),
                 user.getEmail(),
-                user.getUserType().name()
+                user.getUserType().name(),
+                profile.getInstagramUrl(),
+                profile.getYoutubeUrl(),
+                profile.getSpotifyUrl(),
+                profile.getWebsiteUrl()
         );
     }
 }

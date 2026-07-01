@@ -8,6 +8,10 @@ public class ProfileRequest {
     private String profilePhotoUrl;
     private String danceStyles;
     private String artistType;
+    private String instagramUrl;
+    private String youtubeUrl;
+    private String spotifyUrl;
+    private String websiteUrl;
 
     public String getDisplayName() { return displayName; }
     public void setDisplayName(String displayName) { this.displayName = displayName; }
@@ -23,4 +27,12 @@ public class ProfileRequest {
     public void setDanceStyles(String danceStyles) { this.danceStyles = danceStyles; }
     public String getArtistType() { return artistType; }
     public void setArtistType(String artistType) { this.artistType = artistType; }
+    public String getInstagramUrl() { return instagramUrl; }
+    public void setInstagramUrl(String instagramUrl) { this.instagramUrl = instagramUrl; }
+    public String getYoutubeUrl() { return youtubeUrl; }
+    public void setYoutubeUrl(String youtubeUrl) { this.youtubeUrl = youtubeUrl; }
+    public String getSpotifyUrl() { return spotifyUrl; }
+    public void setSpotifyUrl(String spotifyUrl) { this.spotifyUrl = spotifyUrl; }
+    public String getWebsiteUrl() { return websiteUrl; }
+    public void setWebsiteUrl(String websiteUrl) { this.websiteUrl = websiteUrl; }
 }
