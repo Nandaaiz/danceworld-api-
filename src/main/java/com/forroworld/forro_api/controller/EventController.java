@@ -38,4 +38,19 @@ public class EventController {
         String email = authentication.getName();
         return ResponseEntity.ok(eventService.listMyEvents(email));
     }
+
+    @GetMapping("/by-city")
+    public ResponseEntity<List<EventResponse>> listByCity(@RequestParam String city) {
+        return ResponseEntity.ok(eventService.listByCity(city));
+    }
+
+    @GetMapping("/by-country")
+    public ResponseEntity<List<EventResponse>> listByCountry(@RequestParam String country) {
+        return ResponseEntity.ok(eventService.listByCountry(country));
+    }
+
+    @GetMapping("/by-type")
+    public ResponseEntity<List<EventResponse>> listByType(@RequestParam String eventType) {
+        return ResponseEntity.ok(eventService.listByType(eventType));
+    }
 }

@@ -58,6 +58,26 @@ public class EventService {
                 .map(this::toResponse)
                 .collect(Collectors.toList());
     }
+    public List<EventResponse> listByCity(String city) {
+        return eventRepository.findByCity(city)
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<EventResponse> listByCountry(String country) {
+        return eventRepository.findByCountry(country)
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<EventResponse> listByType(String eventType) {
+        return eventRepository.findByEventType(eventType)
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
 
     private EventResponse toResponse(Event event) {
         return new EventResponse(
