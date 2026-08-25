@@ -29,7 +29,7 @@ public class User {
     private LocalDateTime updatedAt;
 
     public enum UserType {
-        STUDENT, TEACHER
+        DANCER, TEACHER, ARTIST
     }
 
     @PrePersist
