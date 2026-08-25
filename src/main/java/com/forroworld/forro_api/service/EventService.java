@@ -9,6 +9,7 @@ import com.forroworld.forro_api.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,6 +78,23 @@ public class EventService {
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    public EventResponse getEventById(UUID id) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+        return toResponse(event);
+    }
+
+    public void deleteEvent(String email, UUID id) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+        if (!event.getCreatedBy().getEmail().equals(email)) {
+            throw new RuntimeException("You can only delete your own events");
+        }
+        eventRepository.delete(event);
     }
 
     private EventResponse toResponse(Event event) {

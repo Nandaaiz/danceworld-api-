@@ -9,7 +9,7 @@ import com.forroworld.forro_api.repository.ProfileRepository;
 import com.forroworld.forro_api.repository.TravelScheduleRepository;
 import com.forroworld.forro_api.repository.UserRepository;
 import org.springframework.stereotype.Service;
-
+import java.util.UUID;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,6 +66,17 @@ public class TravelScheduleService {
                 .stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    public void deleteTravel(String email, UUID id) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        TravelSchedule travel = travelRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Travel not found"));
+        if (!travel.getUser().getEmail().equals(email)) {
+            throw new RuntimeException("You can only delete your own travels");
+        }
+        travelRepository.delete(travel);
     }
 
     private TravelScheduleResponse toResponse(TravelSchedule travel) {

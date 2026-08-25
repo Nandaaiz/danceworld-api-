@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/events")
@@ -53,4 +54,19 @@ public class EventController {
     public ResponseEntity<List<EventResponse>> listByType(@RequestParam String eventType) {
         return ResponseEntity.ok(eventService.listByType(eventType));
     }
+
+    @GetMapping("/{eventId}")
+    public ResponseEntity<EventResponse> getEventById(@PathVariable UUID eventId) {
+        return ResponseEntity.ok(eventService.getEventById(eventId));
+    }
+
+    @DeleteMapping("/{eventId}")
+    public ResponseEntity<Void> deleteEvent(
+            Authentication authentication,
+            @PathVariable UUID eventId) {
+        String email = authentication.getName();
+        eventService.deleteEvent(email, eventId);
+        return ResponseEntity.noContent().build();
+    }
 }
+

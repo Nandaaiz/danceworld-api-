@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/travels")
@@ -47,5 +48,14 @@ public class TravelScheduleController {
             @RequestParam String date) {
         LocalDateTime dateTime = LocalDateTime.parse(date);
         return ResponseEntity.ok(travelService.findByCityAndDate(city, dateTime));
+    }
+
+    @DeleteMapping("/{travelId}")
+    public ResponseEntity<Void> deleteTravel(
+            Authentication authentication,
+            @PathVariable UUID travelId) {
+        String email = authentication.getName();
+        travelService.deleteTravel(email, travelId);
+        return ResponseEntity.noContent().build();
     }
 }
