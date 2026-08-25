@@ -3,6 +3,7 @@ package com.forroworld.forro_api.controller;
 import com.forroworld.forro_api.dto.EventRequest;
 import com.forroworld.forro_api.dto.EventResponse;
 import com.forroworld.forro_api.service.EventService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class EventController {
     @PostMapping
     public ResponseEntity<EventResponse> createEvent(
             Authentication authentication,
-            @RequestBody EventRequest request) {
+            @Valid @RequestBody EventRequest request) {
         String email = authentication.getName();
         return ResponseEntity.ok(eventService.createEvent(email, request));
     }

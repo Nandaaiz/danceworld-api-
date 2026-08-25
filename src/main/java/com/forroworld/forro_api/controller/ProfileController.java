@@ -3,6 +3,7 @@ package com.forroworld.forro_api.controller;
 import com.forroworld.forro_api.dto.ProfileRequest;
 import com.forroworld.forro_api.dto.ProfileResponse;
 import com.forroworld.forro_api.service.ProfileService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class ProfileController {
     @PutMapping("/me")
     public ResponseEntity<ProfileResponse> updateMyProfile(
             Authentication authentication,
-            @RequestBody ProfileRequest request) {
+            @Valid @RequestBody ProfileRequest request) {
         String email = authentication.getName();
         return ResponseEntity.ok(profileService.updateProfile(email, request));
     }

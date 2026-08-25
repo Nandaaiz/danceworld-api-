@@ -3,6 +3,7 @@ package com.forroworld.forro_api.controller;
 import com.forroworld.forro_api.dto.TravelScheduleRequest;
 import com.forroworld.forro_api.dto.TravelScheduleResponse;
 import com.forroworld.forro_api.service.TravelScheduleService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class TravelScheduleController {
     @PostMapping
     public ResponseEntity<TravelScheduleResponse> createTravel(
             Authentication authentication,
-            @RequestBody TravelScheduleRequest request) {
+            @Valid @RequestBody TravelScheduleRequest request) {
         String email = authentication.getName();
         return ResponseEntity.ok(travelService.createTravel(email, request));
     }

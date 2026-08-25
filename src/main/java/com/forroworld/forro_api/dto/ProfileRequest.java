@@ -1,16 +1,42 @@
 package com.forroworld.forro_api.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class ProfileRequest {
+
+    @NotBlank(message = "Display name is required")
+    @Size(max = 100, message = "Display name must be at most 100 characters")
     private String displayName;
+
+    @Size(max = 1000, message = "Bio must be at most 1000 characters")
     private String bio;
+
+    @Size(max = 100, message = "City must be at most 100 characters")
     private String city;
+
+    @Size(max = 100, message = "Country must be at most 100 characters")
     private String country;
+
+    @Size(max = 500, message = "Profile photo URL must be at most 500 characters")
     private String profilePhotoUrl;
+
+    @Size(max = 255, message = "Dance styles must be at most 255 characters")
     private String danceStyles;
+
+    @Size(max = 100, message = "Artist type must be at most 100 characters")
     private String artistType;
+
+    @Size(max = 500, message = "Instagram URL must be at most 500 characters")
     private String instagramUrl;
+
+    @Size(max = 500, message = "YouTube URL must be at most 500 characters")
     private String youtubeUrl;
+
+    @Size(max = 500, message = "Spotify URL must be at most 500 characters")
     private String spotifyUrl;
+
+    @Size(max = 500, message = "Website URL must be at most 500 characters")
     private String websiteUrl;
 
     public String getDisplayName() { return displayName; }
