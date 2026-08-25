@@ -3,6 +3,8 @@ package com.forroworld.forro_api.service;
 import com.forroworld.forro_api.dto.AuthResponse;
 import com.forroworld.forro_api.dto.LoginRequest;
 import com.forroworld.forro_api.dto.RegisterRequest;
+import com.forroworld.forro_api.exception.BadRequestException;
+import com.forroworld.forro_api.exception.InvalidCredentialsException;
 import com.forroworld.forro_api.model.User;
 import com.forroworld.forro_api.repository.UserRepository;
 import com.forroworld.forro_api.security.JwtService;
@@ -26,7 +28,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email já cadastrado");
+            throw new BadRequestException("Email já cadastrado");
         }
 
         User user = new User();
@@ -42,10 +44,10 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new InvalidCredentialsException("Email ou senha inválidos"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new RuntimeException("Senha incorreta");
+            throw new InvalidCredentialsException("Email ou senha inválidos");
         }
 
         String token = jwtService.generateToken(user.getEmail());

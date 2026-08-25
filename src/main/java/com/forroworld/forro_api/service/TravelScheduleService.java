@@ -2,6 +2,8 @@ package com.forroworld.forro_api.service;
 
 import com.forroworld.forro_api.dto.TravelScheduleRequest;
 import com.forroworld.forro_api.dto.TravelScheduleResponse;
+import com.forroworld.forro_api.exception.ResourceNotFoundException;
+import com.forroworld.forro_api.exception.UnauthorizedException;
 import com.forroworld.forro_api.model.Profile;
 import com.forroworld.forro_api.model.TravelSchedule;
 import com.forroworld.forro_api.model.User;
@@ -31,7 +33,7 @@ public class TravelScheduleService {
 
     public TravelScheduleResponse createTravel(String email, TravelScheduleRequest request) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         TravelSchedule travel = new TravelSchedule();
         travel.setUser(user);
@@ -47,7 +49,7 @@ public class TravelScheduleService {
 
     public List<TravelScheduleResponse> getMyTravels(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return travelRepository.findByUser(user)
                 .stream()
                 .map(this::toResponse)
@@ -70,11 +72,11 @@ public class TravelScheduleService {
 
     public void deleteTravel(String email, UUID id) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         TravelSchedule travel = travelRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Travel not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Travel not found"));
         if (!travel.getUser().getEmail().equals(email)) {
-            throw new RuntimeException("You can only delete your own travels");
+            throw new UnauthorizedException("You can only delete your own travels");
         }
         travelRepository.delete(travel);
     }

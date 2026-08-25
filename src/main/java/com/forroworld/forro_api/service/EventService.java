@@ -2,6 +2,8 @@ package com.forroworld.forro_api.service;
 
 import com.forroworld.forro_api.dto.EventRequest;
 import com.forroworld.forro_api.dto.EventResponse;
+import com.forroworld.forro_api.exception.ResourceNotFoundException;
+import com.forroworld.forro_api.exception.UnauthorizedException;
 import com.forroworld.forro_api.model.Event;
 import com.forroworld.forro_api.model.User;
 import com.forroworld.forro_api.repository.EventRepository;
@@ -25,7 +27,7 @@ public class EventService {
 
     public EventResponse createEvent(String email, EventRequest request) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Event event = new Event();
         event.setName(request.getName());
@@ -53,7 +55,7 @@ public class EventService {
 
     public List<EventResponse> listMyEvents(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return eventRepository.findByCreatedBy(user)
                 .stream()
                 .map(this::toResponse)
@@ -82,17 +84,17 @@ public class EventService {
 
     public EventResponse getEventById(UUID id) {
         Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
         return toResponse(event);
     }
 
     public void deleteEvent(String email, UUID id) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
         if (!event.getCreatedBy().getEmail().equals(email)) {
-            throw new RuntimeException("You can only delete your own events");
+            throw new UnauthorizedException("You can only delete your own events");
         }
         eventRepository.delete(event);
     }

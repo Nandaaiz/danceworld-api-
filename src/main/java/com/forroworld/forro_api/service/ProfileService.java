@@ -2,6 +2,7 @@ package com.forroworld.forro_api.service;
 
 import com.forroworld.forro_api.dto.ProfileRequest;
 import com.forroworld.forro_api.dto.ProfileResponse;
+import com.forroworld.forro_api.exception.ResourceNotFoundException;
 import com.forroworld.forro_api.model.Profile;
 import com.forroworld.forro_api.model.User;
 import com.forroworld.forro_api.repository.ProfileRepository;
@@ -22,7 +23,7 @@ public class ProfileService {
 
     public ProfileResponse getProfile(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Profile profile = profileRepository.findByUser(user)
                 .orElse(new Profile());
@@ -32,7 +33,7 @@ public class ProfileService {
 
     public ProfileResponse updateProfile(String email, ProfileRequest request) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Profile profile = profileRepository.findByUser(user)
                 .orElse(new Profile());

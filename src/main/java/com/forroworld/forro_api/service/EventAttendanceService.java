@@ -1,5 +1,6 @@
 package com.forroworld.forro_api.service;
 
+import com.forroworld.forro_api.exception.ResourceNotFoundException;
 import com.forroworld.forro_api.model.Event;
 import com.forroworld.forro_api.model.EventAttendance;
 import com.forroworld.forro_api.model.User;
@@ -31,10 +32,10 @@ public class EventAttendanceService {
 
     public Map<String, Object> markAttendance(String email, UUID eventId, String status) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
         EventAttendance attendance = attendanceRepository
                 .findByUserAndEvent(user, event)
@@ -62,7 +63,7 @@ public class EventAttendanceService {
 
     public List<Map<String, Object>> getEventAttendees(UUID eventId) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
 
         boolean eventPassed = event.getEventDate() != null &&
                 event.getEventDate().isBefore(LocalDateTime.now());
@@ -84,7 +85,7 @@ public class EventAttendanceService {
 
     public List<Map<String, Object>> getMyAttendances(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         return attendanceRepository.findByUser(user)
                 .stream()
