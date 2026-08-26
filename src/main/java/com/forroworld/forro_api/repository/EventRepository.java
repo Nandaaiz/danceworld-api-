@@ -2,6 +2,8 @@ package com.forroworld.forro_api.repository;
 
 import com.forroworld.forro_api.model.Event;
 import com.forroworld.forro_api.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,11 +15,11 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
     List<Event> findByCreatedBy(User user);
 
     @Query("SELECT e FROM Event e WHERE LOWER(e.city) = LOWER(:city)")
-    List<Event> findByCity(@Param("city") String city);
+    Page<Event> findByCity(@Param("city") String city, Pageable pageable);
 
     @Query("SELECT e FROM Event e WHERE LOWER(e.country) = LOWER(:country)")
-    List<Event> findByCountry(@Param("country") String country);
+    Page<Event> findByCountry(@Param("country") String country, Pageable pageable);
 
     @Query("SELECT e FROM Event e WHERE LOWER(e.eventType) = LOWER(:eventType)")
-    List<Event> findByEventType(@Param("eventType") String eventType);
+    Page<Event> findByEventType(@Param("eventType") String eventType, Pageable pageable);
 }

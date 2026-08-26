@@ -2,8 +2,11 @@ package com.forroworld.forro_api.controller;
 
 import com.forroworld.forro_api.dto.EventRequest;
 import com.forroworld.forro_api.dto.EventResponse;
+import com.forroworld.forro_api.dto.PageResponse;
 import com.forroworld.forro_api.service.EventService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +33,9 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity<List<EventResponse>> listAllEvents() {
-        return ResponseEntity.ok(eventService.listAllEvents());
+    public ResponseEntity<PageResponse<EventResponse>> listAllEvents(
+            @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(eventService.listAllEvents(pageable));
     }
 
     @GetMapping("/my-events")
@@ -42,18 +46,24 @@ public class EventController {
     }
 
     @GetMapping("/by-city")
-    public ResponseEntity<List<EventResponse>> listByCity(@RequestParam String city) {
-        return ResponseEntity.ok(eventService.listByCity(city));
+    public ResponseEntity<PageResponse<EventResponse>> listByCity(
+            @RequestParam String city,
+            @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(eventService.listByCity(city, pageable));
     }
 
     @GetMapping("/by-country")
-    public ResponseEntity<List<EventResponse>> listByCountry(@RequestParam String country) {
-        return ResponseEntity.ok(eventService.listByCountry(country));
+    public ResponseEntity<PageResponse<EventResponse>> listByCountry(
+            @RequestParam String country,
+            @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(eventService.listByCountry(country, pageable));
     }
 
     @GetMapping("/by-type")
-    public ResponseEntity<List<EventResponse>> listByType(@RequestParam String eventType) {
-        return ResponseEntity.ok(eventService.listByType(eventType));
+    public ResponseEntity<PageResponse<EventResponse>> listByType(
+            @RequestParam String eventType,
+            @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(eventService.listByType(eventType, pageable));
     }
 
     @GetMapping("/{eventId}")

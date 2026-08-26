@@ -2,12 +2,15 @@ package com.forroworld.forro_api.service;
 
 import com.forroworld.forro_api.dto.EventRequest;
 import com.forroworld.forro_api.dto.EventResponse;
+import com.forroworld.forro_api.dto.PageResponse;
 import com.forroworld.forro_api.exception.ResourceNotFoundException;
 import com.forroworld.forro_api.exception.UnauthorizedException;
 import com.forroworld.forro_api.model.Event;
 import com.forroworld.forro_api.model.User;
 import com.forroworld.forro_api.repository.EventRepository;
 import com.forroworld.forro_api.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,11 +49,9 @@ public class EventService {
         return toResponse(event);
     }
 
-    public List<EventResponse> listAllEvents() {
-        return eventRepository.findAll()
-                .stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+    public PageResponse<EventResponse> listAllEvents(Pageable pageable) {
+        Page<EventResponse> events = eventRepository.findAll(pageable).map(this::toResponse);
+        return PageResponse.from(events);
     }
 
     public List<EventResponse> listMyEvents(String email) {
@@ -61,25 +62,20 @@ public class EventService {
                 .map(this::toResponse)
                 .collect(Collectors.toList());
     }
-    public List<EventResponse> listByCity(String city) {
-        return eventRepository.findByCity(city)
-                .stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+
+    public PageResponse<EventResponse> listByCity(String city, Pageable pageable) {
+        Page<EventResponse> events = eventRepository.findByCity(city, pageable).map(this::toResponse);
+        return PageResponse.from(events);
     }
 
-    public List<EventResponse> listByCountry(String country) {
-        return eventRepository.findByCountry(country)
-                .stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+    public PageResponse<EventResponse> listByCountry(String country, Pageable pageable) {
+        Page<EventResponse> events = eventRepository.findByCountry(country, pageable).map(this::toResponse);
+        return PageResponse.from(events);
     }
 
-    public List<EventResponse> listByType(String eventType) {
-        return eventRepository.findByEventType(eventType)
-                .stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+    public PageResponse<EventResponse> listByType(String eventType, Pageable pageable) {
+        Page<EventResponse> events = eventRepository.findByEventType(eventType, pageable).map(this::toResponse);
+        return PageResponse.from(events);
     }
 
     public EventResponse getEventById(UUID id) {
